@@ -11,14 +11,10 @@ class UnifyAI(LM):
         super().__init__(model=self.model)
 
     def set_model_or_router(self, endpoint):
-        """Set the model or router based on the input."""
         self.model = endpoint
 
     def basic_request(self, prompt, **kwargs):
-        """
-        Send a basic request to the Unify AI API.
-        This method is required by the LM base class.
-        """
+       
         headers = {
             "Authorization": f"Bearer {self.api_key}",
             "Content-Type": "application/json"
@@ -49,7 +45,6 @@ class UnifyAI(LM):
         return self.basic_request(prompt, **kwargs)
 
     def generate(self, prompt, max_tokens=100, temperature=0.7, n=1, stop=None):
-        """Generate one or more responses to the given prompt."""
         kwargs = {
             "max_tokens": max_tokens,
             "temperature": temperature,
@@ -66,7 +61,6 @@ class UnifyAI(LM):
         return responses
 
     def list_available_models(self):
-        """Retrieve a list of available models from the API."""
         headers = {"Authorization": f"Bearer {self.api_key}"}
         try:
             response = requests.get(f"{self.api_base}/models", headers=headers)
@@ -92,14 +86,14 @@ class UnifyAI(LM):
 
 # Usage example
 if __name__ == "__main__":
-    # Initialize the UnifyAI instance with a specific model and fallback
+    
     unify_lm = UnifyAI(endpoint="llama-3-8b-chat@fireworks-ai->gpt-3.5-turbo@openai")
 
-    # Check credit balance
+    
     credit_balance = unify_lm.get_credit_balance()
     print(f"Current credit balance: {credit_balance}")
 
-    # List available models
+
     print("Available models:")
     models = unify_lm.list_available_models()
     for model in models:
@@ -117,7 +111,6 @@ if __name__ == "__main__":
     else:
         print("Failed to generate any responses.")
 
-    # Example with router
     router_lm = UnifyAI(endpoint="router@q:1|c:4.65e-03|t:2.08e-05|i:2.07e-03")
     print("\nUsing router for generation:")
     router_responses = router_lm.generate("What is the capital of France?", max_tokens=50)
