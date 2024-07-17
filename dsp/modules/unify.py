@@ -26,7 +26,7 @@ class Unify(LM):
         self.system_prompt = system_prompt
         self.kwargs = {
             "model": self.model,
-            "temperature": 0.0,
+            "temperature": 0.8,
             "max_tokens": 150,
             "top_p": 1,
             "n": 1,
