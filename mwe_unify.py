@@ -10,13 +10,38 @@ from dspy.teleprompt import BootstrapFewShot
 load_dotenv()
 unify_api_key = os.getenv("UNIFY_KEY")
 
-# Initialize Unify model
-model = dsp.Unify(
-    model="gpt-3.5-turbo@openai",
-    max_tokens=150,
-    stream=True,
-    api_key=unify_api_key,
-)
+# Function to define the endpoint
+def define_endpoint(model=None, provider=None, endpoint=None):
+    if endpoint:
+        return endpoint
+    elif model and provider:
+        return f"{model}@{provider}"
+    else:
+        raise ValueError("Missing required value: either provide 'endpoint' or both 'model' and 'provider'.")
+
+# Function to initialize the Unify model with endpoint
+def initialize_model(endpoint, api_key):
+    return dsp.Unify(
+        model=endpoint,
+        max_tokens=150,
+        stream=True,
+        api_key=api_key,
+    )
+
+# User-defined inputs for model, provider, and endpoint
+model_name = "gpt-3.5-turbo"  
+provider = "openai"  
+endpoint = None  
+
+# Define the endpoint
+try:
+    model_endpoint = define_endpoint(model=model_name, provider=provider, endpoint=endpoint)
+except ValueError as e:
+    print(e)
+    exit(1)
+
+# Initialize Unify model with the defined endpoint
+model = initialize_model(model_endpoint, unify_api_key)
 dspy.settings.configure(lm=model)
 
 # Load GSM8K dataset
