@@ -45,6 +45,19 @@ model = initialize_model(model_endpoint, unify_api_key)
 dspy.settings.configure(lm=model)
 
 # Load GSM8K dataset
+=======
+
+model = dsp.Unify(
+    model="gpt-3.5-turbo@openai",
+    max_tokens=150,
+    stream=True,
+    api_key=unify_api_key,
+)
+
+dspy.settings.configure(lm=model)
+
+# Load math questions from the GSM8K dataset.
+
 gsm8k = GSM8K()
 gsm8k_trainset, gsm8k_devset = gsm8k.train[:10], gsm8k.dev[:10]
 
@@ -78,6 +91,7 @@ evaluate = Evaluate(
 
 # Evaluate optimized CoT program
 evaluate(optimized_cot)
+
 model.inspect_history(n=1)
 
 print(
