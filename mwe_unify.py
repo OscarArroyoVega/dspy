@@ -44,8 +44,7 @@ except ValueError as e:
 model = initialize_model(model_endpoint, unify_api_key)
 dspy.settings.configure(lm=model)
 
-# Load GSM8K dataset
-=======
+
 
 model = dsp.Unify(
     model="gpt-3.5-turbo@openai",
